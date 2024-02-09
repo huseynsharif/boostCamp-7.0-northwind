@@ -1,6 +1,7 @@
 package com.huseynsharif.northwind.api.controllers;
 
 import com.huseynsharif.northwind.business.abstracts.ProductService;
+import com.huseynsharif.northwind.core.utilities.results.DataResult;
 import com.huseynsharif.northwind.entities.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getAll")
-    public List<Product> getAll(){
+    public DataResult<List<Product>> getAll(){
         return this.productService.getAll();
     }
 }
