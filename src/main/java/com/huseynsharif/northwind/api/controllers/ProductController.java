@@ -57,6 +57,8 @@ public class ProductController {
 
         }
 
+
+
         ErrorDataResult<Object> errors = new ErrorDataResult<Object>("Validasyon hatalari.",validationErrors);
 
         return errors;
