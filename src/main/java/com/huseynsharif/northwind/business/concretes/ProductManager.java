@@ -2,8 +2,12 @@ package com.huseynsharif.northwind.business.concretes;
 
 import com.huseynsharif.northwind.business.abstracts.ProductService;
 import com.huseynsharif.northwind.core.utilities.results.*;
+import com.huseynsharif.northwind.dataAccess.CategoryDao;
 import com.huseynsharif.northwind.dataAccess.ProductDao;
+import com.huseynsharif.northwind.entities.Category;
 import com.huseynsharif.northwind.entities.Product;
+import com.huseynsharif.northwind.entities.dtos.ProductDto;
+import com.huseynsharif.northwind.entities.dtos.ProductWithCategoryDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import java.util.List;
 public class ProductManager implements ProductService {
 
     private ProductDao productDao;
+    private CategoryDao categoryDao;
 
     @Override
     public DataResult<List<Product>> getAll() {
@@ -22,7 +27,17 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public Result add(Product product) {
+    public Result add(ProductDto productDto) {
+
+        Category category = this.categoryDao.findById(productDto.getCategoryId()).orElse(null);
+
+
+        Product product = new Product(
+                productDto.getProductName(),
+                category,
+                productDto.getQuantityPerUnit(),
+                productDto.getUnitPrice()
+        );
 
         this.productDao.save(product);
 
@@ -30,14 +45,20 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public DataResult<Product> findByProductName(String productName) {
+    public DataResult<ProductWithCategoryDetails> findByProductName(String productName) {
         Product product = this.productDao.findByProductName(productName);
 
         if (product==null){
             return new ErrorDataResult<>("Bele adda product yoxdur!");
         }
         else{
-            return new SuccesDataResult<>("Ugurla tapildi.", product);
+            ProductWithCategoryDetails response = new ProductWithCategoryDetails(
+                    product.getProductName(),
+                    product.getCategory().getCategoryName(),
+                    product.getQuantityPerUnit(),
+                    product.getUnitPrice()
+            );
+            return new SuccesDataResult<>("Ugurla tapildi.", response);
         }
     }
 

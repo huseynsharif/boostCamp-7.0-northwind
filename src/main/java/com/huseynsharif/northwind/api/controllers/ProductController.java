@@ -4,6 +4,8 @@ import com.huseynsharif.northwind.business.abstracts.ProductService;
 import com.huseynsharif.northwind.core.utilities.results.DataResult;
 import com.huseynsharif.northwind.core.utilities.results.Result;
 import com.huseynsharif.northwind.entities.Product;
+import com.huseynsharif.northwind.entities.dtos.ProductDto;
+import com.huseynsharif.northwind.entities.dtos.ProductWithCategoryDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +24,12 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody Product product){
-        return this.productService.add(product);
+    public Result add(@RequestBody ProductDto productDto){
+        return this.productService.add(productDto);
     }
 
     @GetMapping("/find-by-product-name")
-    public DataResult<Product> findByProductName(@RequestParam String productName){
+    public DataResult<ProductWithCategoryDetails> findByProductName(@RequestParam String productName){
         return this.productService.findByProductName(productName);
     }
 

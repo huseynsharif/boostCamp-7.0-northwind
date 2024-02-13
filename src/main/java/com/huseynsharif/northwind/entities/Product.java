@@ -20,8 +20,9 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "category_id")
-    private int categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "quantity_per_unit")
     private String quantityPerUnit;
@@ -29,4 +30,10 @@ public class Product {
     @Column(name = "unit_price")
     private int unitPrice;
 
+    public Product(String productName, Category category, String quantityPerUnit, int unitPrice) {
+        this.productName = productName;
+        this.category = category;
+        this.quantityPerUnit = quantityPerUnit;
+        this.unitPrice = unitPrice;
+    }
 }
