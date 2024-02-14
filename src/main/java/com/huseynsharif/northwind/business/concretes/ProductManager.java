@@ -9,8 +9,11 @@ import com.huseynsharif.northwind.entities.Product;
 import com.huseynsharif.northwind.entities.dtos.ProductDto;
 import com.huseynsharif.northwind.entities.dtos.ProductWithCategoryDetails;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -72,5 +75,25 @@ public class ProductManager implements ProductService {
         else{
             return new SuccesDataResult<>("Ugurla tapildi.", product);
         }
+    }
+
+    @Override
+    public DataResult<List<Product>> getAllByPage(int pageNo, int pageSize) {
+
+        if (pageNo<1){
+            return new ErrorDataResult<>("Page No 1-den kicik ola bilmez.");
+        }
+
+        if (pageSize<1){
+            return new ErrorDataResult<>("Page size 1-den kicik ola bilmez.");
+        }
+
+        PageRequest pageable = PageRequest.of(pageNo-1, pageSize);
+        List<Product> data = this.productDao.findAll(pageable).getContent();
+        if (data.isEmpty()){
+            return new ErrorDataResult<>("Out of bounds");
+        }
+        return new SuccesDataResult<>("Page ile siralandi.", data);
+
     }
 }

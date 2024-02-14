@@ -15,4 +15,6 @@ public interface ProductService {
     DataResult<ProductWithCategoryDetails> findByProductName(String productName);
     DataResult<Product> findByProductNameAndUnitPrice(String productName, int unitPrice);
 
+    DataResult<List<Product>> getAllByPage(int pageNo, int pageSize);
+
 }

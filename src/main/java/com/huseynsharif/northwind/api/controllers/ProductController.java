@@ -45,6 +45,11 @@ public class ProductController {
         return this.productService.findByProductNameAndUnitPrice(productName, unitPrice);
     }
 
+    @GetMapping("/get-all-by-page")
+    public DataResult<List<Product>> getAllByPage(@RequestParam int pageNo, @RequestParam int pageSize){
+        return this.productService.getAllByPage(pageNo, pageSize);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exceptions){
@@ -56,8 +61,6 @@ public class ProductController {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
 
         }
-
-
 
         ErrorDataResult<Object> errors = new ErrorDataResult<Object>("Validasyon hatalari.",validationErrors);
 
